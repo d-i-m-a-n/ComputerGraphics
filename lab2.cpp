@@ -18,18 +18,18 @@ Lab2::Lab2(QWidget *parent) : QWidget(parent)
 void Lab2::computeCoordinates()
 {
 
-    double T[4][4] = {{1,0,0,0},
-                      {0,1,0,0},
-                      {0,0,1,0},
-                      {-obsCoord[0],-obsCoord[1],-obsCoord[2],1}};
-    double S [4][4] = {{-1,0,0,0},
-                       {0,1,0,0},
-                       {0,0,1,0},
-                       {0,0,0,1}};
-    double Rx90 [4][4] = {{1,0,0,0},
-                          {0,0,-1,0},
-                          {0,1,0,0},
-                          {0,0,0,1}};
+    Matrix T = {{1,0,0,0},
+                {0,1,0,0},
+                {0,0,1,0},
+                {-obsCoord[0],-obsCoord[1],-obsCoord[2],1}};
+    Matrix S = {{-1,0,0,0},
+                {0,1,0,0},
+                {0,0,1,0},
+                {0,0,0,1}};
+    Matrix Rx90 = {{1,0,0,0},
+                   {0,0,-1,0},
+                   {0,1,0,0},
+                   {0,0,0,1}};
 
     double d = std::sqrt(std::pow(obsCoord[0],2) + std::pow(obsCoord[1],2));
     double sinU;
@@ -43,10 +43,10 @@ void Lab2::computeCoordinates()
         cosU = obsCoord[1] / d;
     }
 
-    double Ry[4][4] = {{cosU,0,sinU,0},
-                       {0,1,0,0},
-                       {-sinU,0,cosU,0},
-                       {0,0,0,1}};
+    Matrix Ry = {{cosU,0,sinU,0},
+                 {0,1,0,0},
+                 {-sinU,0,cosU,0},
+                 {0,0,0,1}};
 
     double s = std::sqrt(std::pow(obsCoord[0],2) + std::pow(obsCoord[1],2) + std::pow(obsCoord[2],2));
     double sinW;
@@ -60,26 +60,23 @@ void Lab2::computeCoordinates()
         cosW = d / s;
     }
 
-    double Rx[4][4] = {{1,0,0,0},
-                       {0,cosW,-sinW,0},
-                       {0,sinW,cosW,0},
-                       {0,0,0,1}};
+    Matrix Rx = {{1,0,0,0},
+                 {0,cosW,-sinW,0},
+                 {0,sinW,cosW,0},
+                 {0,0,0,1}};
 
 
-    double **V = productOfMatrix(T,S,Rx90,Ry,Rx);
+    Matrix V = T*S*Rx90*Ry*Rx;
 
-    double VerNa[NV][3];
+    Matrix VerNa(NV,3);
 
     for(int i = 0; i < NV; i++)
     {
-        double buf[4] = {Ver[i][0],Ver[i][1],Ver[i][2],1};
-        for(int j = 0; j < 3; j++)
-        {
-            VerNa[i][j] = buf[1]*V[1][j] + buf[2]*V[2][j] + buf[3]*V[3][j] + buf[0]*V[0][j];
-        }
+        Matrix buf = {{Ver[i][0],Ver[i][1],Ver[i][2],1}};
+        VerNa[i] = (buf * V)[0];
     }
 
-    double VerKa[NV][2];
+    Matrix VerKa(NV,2);
 
     for(int i = 0; i < NV; i++)
     {
@@ -102,50 +99,9 @@ void Lab2::computeCoordinates()
     for(int i = 0 ; i < NV; i++)
     {
         VerEk[i][0] = (VerKa[i][0] * Xe / Pk) + Xc;
-        VerEk[i][1] = (VerKa[i][1] * Ye / Pk + Yc) * (-1) + 500;
+        VerEk[i][1] = (VerKa[i][1] * Ye / Pk + Yc) * (-1) + 2*Yc;
     }
 
-
-    for(int i = 0; i < 4; i++)
-        delete[] V[i];
-    delete[] V;
-}
-
-double** Lab2::productOfMatrix(double matrix1[4][4],double matrix2[4][4],double matrix3[4][4],double matrix4[4][4],double matrix5[4][4])
-{
-    double **buf = new double*[4];
-    for(int i = 0; i < 4;i++)
-    {
-        buf[i] = new double[4];
-        for(int j = 0; j < 4; j++)
-            buf[i][j] = matrix1[i][1]*matrix2[1][j] + matrix1[i][2]*matrix2[2][j] + matrix1[i][3]*matrix2[3][j] + matrix1[i][0]*matrix2[0][j];
-    }
-
-    double **buf2 = new double*[4];
-    for(int i = 0; i < 4;i++)
-    {
-        buf2[i] = new double[4];
-        for(int j = 0; j < 4; j++)
-            buf2[i][j] = buf[i][1]*matrix3[1][j] + buf[i][2]*matrix3[2][j] + buf[i][3]*matrix3[3][j] + buf[i][0]*matrix3[0][j];
-    }
-
-    for(int i = 0; i < 4;i++)
-    {
-        for(int j = 0; j < 4; j++)
-            buf[i][j] = buf2[i][1]*matrix4[1][j] + buf2[i][2]*matrix4[2][j] + buf2[i][3]*matrix4[3][j] + buf2[i][0]*matrix4[0][j];
-    }
-
-    for(int i = 0; i < 4;i++)
-    {
-        for(int j = 0; j < 4; j++)
-            buf2[i][j] = buf[i][1]*matrix5[1][j] + buf[i][2]*matrix5[2][j] + buf[i][3]*matrix5[3][j] + buf[i][0]*matrix5[0][j];
-    }
-
-    for(int i = 0; i < 4; i++)
-        delete[] buf[i];
-    delete[] buf;
-
-    return buf2;
 }
 
 void Lab2::paintEvent(QPaintEvent *event)
@@ -170,15 +126,19 @@ void Lab2::paintEvent(QPaintEvent *event)
 void Lab2::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event);
-    myTimer = startTimer(5000);
+    myTimer = startTimer(50);
 }
 
 void Lab2::timerEvent(QTimerEvent *event)
 {
     if(event->timerId() == myTimer)
     {
-        obsCoord[0] -= 2;
-        obsCoord[2] += 4;
+        double x = obsCoord[0];
+        double angle = 2 * PI /180;
+        obsCoord[0] = x * cos(angle) - obsCoord[1] * sin(angle);
+        obsCoord[1] = x * sin(angle) + obsCoord[1] * cos(angle);
+//        obsCoord[0] -= 2;
+//        obsCoord[2] += 4;
         computeCoordinates();
         update();
     } else {
