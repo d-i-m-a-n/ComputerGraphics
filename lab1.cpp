@@ -8,7 +8,6 @@
 
 #define PI 3.14159265
 
-
 Lab1::Lab1(QWidget *parent) :
     QWidget(parent)
 {
