@@ -5,6 +5,8 @@
 
 #include "lab1.h"
 #include "lab2.h"
+#include "lab3.h"
+#include "lab4.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,5 +25,7 @@ private:
 
     Lab1 lab1;
     Lab2 lab2;
+    Lab3 lab3;
+    Lab4 lab4;
 };
 #endif // MAINWINDOW_H

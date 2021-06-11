@@ -6,9 +6,11 @@
 
 typedef std::vector<double> row;
 
+class Lab4;
 
 class Matrix : public std::vector<row>
 {
+    friend Lab4;
 public:
     Matrix(std::initializer_list<row> matrix);
 

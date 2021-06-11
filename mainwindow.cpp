@@ -12,7 +12,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->pushButton_lab1,SIGNAL(clicked()),&lab1,SLOT(show()));
     connect(ui->pushButton_lab2,SIGNAL(clicked()),&lab2,SLOT(show()));
-
+    connect(ui->pushButton_lab2,SIGNAL(clicked()),&lab3,SLOT(show()));
+    connect(ui->pushButton_lab4,SIGNAL(clicked()),&lab4,SLOT(show()));
 }
 
 MainWindow::~MainWindow()

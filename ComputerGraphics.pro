@@ -16,24 +16,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    facet.cpp \
     lab1.cpp \
     lab2.cpp \
     lab3.cpp \
+    lab4.cpp \
     main.cpp \
     mainwindow.cpp \
     matrix.cpp \
-    model.cpp \
     simpletransformations.cpp
 
 HEADERS += \
-    facet.h \
     lab1.h \
     lab2.h \
     lab3.h \
+    lab4.h \
     mainwindow.h \
     matrix.h \
-    model.h \
     simpletransformations.h
 
 FORMS += \
