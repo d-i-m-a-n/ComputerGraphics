@@ -7,7 +7,7 @@
 
 const QPointF rotate(QPointF point, QPointF center, double angle);
 
-QPointF scale(QPointF point, QPointF center, double kX, double kY);
+QPointF scale(QPointF point, QPointF center, double k);
 
 
 #endif // SIMPLETRANSFORMATIONS_H

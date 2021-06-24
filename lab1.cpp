@@ -1,7 +1,7 @@
 #include "lab1.h"
 
 #include <QPainter>
-#include <QResizeEvent>
+#include <QTimerEvent>
 #include <cmath>
 
 #include <simpletransformations.h>
@@ -24,35 +24,6 @@ Lab1::Lab1(QWidget *parent) :
     octangle[0] = QPointF(road[0]);
     for(int i = 1; i < 8; i++)
         octangle[i] = rotate(octangle[i-1],center, 45.0 * PI / 180);
-}
-
-void Lab1::resizeEvent(QResizeEvent *event)
-{
-
-    QSize newSize = event->size();
-    QSize oldSize = event->oldSize();
-
-    if(oldSize.width() < 0)
-        return;
-
-    double kX = (double)newSize.width() / (double)oldSize.width();
-    double kY = (double)newSize.height() / (double)oldSize.height();
-
-    road[0] = scale(road[0], QPointF(0,0), kX, kY);
-    road[1] = scale(road[1], QPointF(0,0), kX, kY);
-
-    center = scale(center, QPointF(0,0), kX, kY);
-
-    for(int i = 0; i < 8; i++)
-            octangle[i] = scale(octangle[i], center, kX, kY);
-
-//    center = QPoint(road[0].x() + 30, road[0].y() - 40);
-
-//    octangle[0] = QPointF(road[0]);
-//    for(int i = 1; i < 8; i++)
-//        octangle[i] = turn(octangle[i-1],center,45);
-
-
 }
 
 void Lab1::paintEvent(QPaintEvent *event)
@@ -94,7 +65,7 @@ void Lab1::timerEvent(QTimerEvent *event)
         {
             octangle[i] = QPointF(octangle[i].x() + 5, octangle[i].y() + 1.5);
             octangle[i] = rotate(octangle[i],center, 5.0 * PI / 180);
-            octangle[i] = scale(octangle[i],center, 1.01, 1.01);
+            octangle[i] = scale(octangle[i],center, 1.01);
             if (octangle[i].x() > this->width())
                 reachedRightSide = true;
         }

@@ -12,7 +12,6 @@ public:
 
 private:
 
-    void resizeEvent(QResizeEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
     void timerEvent(QTimerEvent *event) override;
     void showEvent(QShowEvent *event) override;

@@ -27,7 +27,7 @@ private:
     int Reb[9][2] = {{0,1},{0,2},{0,4},{1,3},{1,4},{2,3},{2,5},{3,5},{4,5}};
     int markedNode = 0;
     int markedReb = 8;
-    double obsCoord[3] = {10,0,0};
+    double obsCoord[3] = {10,0,5};
     double VerEk[9][2];
     const int NV = 6;
     const int NR = 9;

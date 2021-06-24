@@ -8,15 +8,15 @@ const QPointF rotate(QPointF point, QPointF center, double angle)
     return point;
 }
 
-QPointF scale(QPointF point, QPointF center, double kX, double kY)
+QPointF scale(QPointF point, QPointF center, double k)
 {
     point = QPointF(point.x()-center.x(), point.y()-center.y());
 
-    double tan = point.y() / point.x();
-    double angle = -1 * atan(tan);
-    point = rotate(point, QPointF(0,0), angle);
-    point = QPointF(point.x() * kX, point.y() * kY);
-    point = rotate(point, QPointF(0,0), -1 * angle);
+    //double tan = point.y() / point.x();
+    //double angle = -1 * atan(tan);
+    //point = rotate(point, QPointF(0,0), angle);
+    point = QPointF(point.x() * k, point.y() * k);
+    //point = rotate(point, QPointF(0,0), -1 * angle);
     point = QPointF(point.x()+center.x(), point.y()+center.y());
     return point;
 }

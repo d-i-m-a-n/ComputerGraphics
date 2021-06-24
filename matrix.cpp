@@ -12,7 +12,7 @@ Matrix::Matrix(int rows, int columns) : std::vector<row>(rows, row(columns))
     columnCount = columns;
 }
 
-Matrix Matrix::operator*(const Matrix &obj)
+const Matrix Matrix::operator*(const Matrix &obj) const
 {
     Matrix res(rowCount, obj.columnCount);
 

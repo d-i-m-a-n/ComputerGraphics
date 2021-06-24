@@ -16,7 +16,7 @@ public:
 
     Matrix(int rows, int columns);
 
-    Matrix operator * (const Matrix &matrix);
+    const Matrix operator * (const Matrix &matrix) const;
 
 private:
     int rowCount;
